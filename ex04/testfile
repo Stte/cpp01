@@ -1,0 +1,6 @@
+
+output: 0
+0 is the return value of printf
+printf returns the number of characters printed
+
+printf returns the number of characters printed
