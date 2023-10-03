@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 int	main(int argc, char *argv[])
 {
@@ -30,17 +31,21 @@ int	main(int argc, char *argv[])
 		std::cout << "Error: failed to create output file" << std::endl;
 		return (4);
 	}
-	std::string	line;
-	size_t		index;
-	while (std::getline(fileIn, line))
+
+	std::stringstream buffer;
+	buffer << fileIn.rdbuf();
+	std::string data = buffer.str();
+
+	size_t		index = 0;
+	size_t		pos = 0;
+	while ((index = data.find(s1, pos)) != std::string::npos)
 	{
-		while ((index = line.find(s1)) != std::string::npos)
-		{
-			line.erase(index, s1.length());
-			line.insert(index, s2);
-		}
-		fileOut << line << std::endl;
+		data.erase(index, s1.length());
+		data.insert(index, s2);
+		pos = index + s2.length();
 	}
+	fileOut << data << std::endl;
+
 	fileIn.close();
 	fileOut.close();
 	return (0);
